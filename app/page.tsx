@@ -13,6 +13,7 @@ interface AuthResponse {
     expiresAt?: number;
   };
   message?: string; // Error messages come as 'message' not 'error'
+  debug?: string; // Debug information for troubleshooting
 }
 
 
