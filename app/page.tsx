@@ -45,6 +45,16 @@ export default function Home() {
     { method: "GET" }
   );
 
+  // Debug: Log authentication state
+  useEffect(() => {
+    console.log("Auth State:", {
+      isAuthLoading,
+      authError,
+      authData,
+      context: context?.user
+    });
+  }, [isAuthLoading, authError, authData, context]);
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -61,7 +71,10 @@ export default function Home() {
     }
 
     if (authError || !authData?.success) {
-      setError("Please authenticate to join the waitlist");
+      console.error("Authentication failed:", { authError, authData });
+      // Show more detailed error message
+      const errorMsg = authData?.message || authData?.debug || authError?.message || "Authentication failed";
+      setError(`Auth Error: ${errorMsg}`);
       return;
     }
 
@@ -97,6 +110,27 @@ export default function Home() {
              Hey {context?.user?.displayName || "there"}, Get early access and be the first to experience the future of<br />
             crypto marketing strategy.
           </p>
+
+          {/* Debug panel */}
+          {(authError || !authData?.success) && (
+            <div style={{
+              background: '#fff3cd',
+              border: '1px solid #ffc107',
+              borderRadius: '4px',
+              padding: '0.75rem',
+              marginBottom: '1rem',
+              fontSize: '0.85rem',
+              textAlign: 'left'
+            }}>
+              <strong>Debug Info:</strong>
+              <div style={{ marginTop: '0.5rem' }}>
+                <div>Auth Loading: {isAuthLoading ? 'Yes' : 'No'}</div>
+                <div>Auth Success: {authData?.success ? 'Yes' : 'No'}</div>
+                <div>Error: {authError?.message || authData?.message || authData?.debug || 'None'}</div>
+                <div>Context User FID: {context?.user?.fid || 'Not available'}</div>
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <input

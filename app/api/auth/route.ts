@@ -41,21 +41,37 @@ export async function GET(request: NextRequest) {
   // if we're in a mini app, the request will include the necessary `Authorization` header.
   const authorization = request.headers.get("Authorization");
 
+  console.log("=== AUTH REQUEST START ===");
+  console.log("Authorization header:", authorization ? "Present" : "Missing");
+  console.log("Origin:", request.headers.get("origin"));
+  console.log("Host:", request.headers.get("host"));
+
   // Here we ensure that we have a valid token.
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return NextResponse.json({ message: "Missing token" }, { status: 401 });
+    console.log("ERROR: Missing or invalid Authorization header");
+    return NextResponse.json({
+      success: false,
+      message: "Missing token",
+      debug: "No Authorization header found"
+    }, { status: 401 });
   }
 
   try {
     // Now we verify the token. `domain` must match the domain of the request.
     // In our case, we're using the `getUrlHost` function to get the domain of the request
     // based on the Vercel environment. This will vary depending on your hosting provider.
+    const domain = getUrlHost(request);
+    console.log("Verifying JWT with domain:", domain);
+    console.log("NEXT_PUBLIC_URL:", process.env.NEXT_PUBLIC_URL);
+    console.log("VERCEL_URL:", process.env.VERCEL_URL);
+    console.log("VERCEL_ENV:", process.env.VERCEL_ENV);
+
     const payload = await client.verifyJwt({
       token: authorization.split(" ")[1] as string,
-      domain: getUrlHost(request),
+      domain: domain,
     });
 
-    console.log("payload", payload);
+    console.log("JWT verified successfully. Payload:", payload);
 
     // If the token was valid, `payload.sub` will be the user's Farcaster ID.
     const userFid = payload.sub;
@@ -71,11 +87,24 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (e) {
+    console.error("=== AUTH ERROR ===");
+    console.error("Error type:", e instanceof Errors.InvalidTokenError ? "InvalidTokenError" : e?.constructor?.name);
+    console.error("Error message:", e instanceof Error ? e.message : String(e));
+    console.error("Full error:", e);
+
     if (e instanceof Errors.InvalidTokenError) {
-      return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+      return NextResponse.json({
+        success: false,
+        message: "Invalid token",
+        debug: e.message
+      }, { status: 401 });
     }
     if (e instanceof Error) {
-      return NextResponse.json({ message: e.message }, { status: 500 });
+      return NextResponse.json({
+        success: false,
+        message: e.message,
+        debug: `Error: ${e.message}`
+      }, { status: 500 });
     }
     throw e;
   }
