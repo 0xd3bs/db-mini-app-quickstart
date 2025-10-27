@@ -9,13 +9,13 @@ const ROOT_URL =
  */
 export const minikitConfig = {
   accountAssociation: {
-    header: "",
-    payload: "",
-    signature: ""
+    header: process.env.NEXT_FARCASTER_HEADER,
+    payload: process.env.NEXT_FARCASTER_PAYLOAD,
+    signature: process.env.NEXT_FARCASTER_SIGNATURE
   },
   miniapp: {
     version: "1",
-    name: "Cubey", 
+    name: "DBCubey", 
     subtitle: "Your AI Ad Companion", 
     description: "Ads",
     screenshotUrls: [`${ROOT_URL}/screenshot-portrait.png`],
