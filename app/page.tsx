@@ -1,21 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useQuickAuth,useMiniKit } from "@coinbase/onchainkit/minikit";
+import { useMiniKit } from "@coinbase/onchainkit/minikit";
 import { useRouter } from "next/navigation";
 import { minikitConfig } from "../minikit.config";
 import styles from "./page.module.css";
-
-interface AuthResponse {
-  success: boolean;
-  user?: {
-    fid: number; // FID is the unique identifier for the user
-    issuedAt?: number;
-    expiresAt?: number;
-  };
-  message?: string; // Error messages come as 'message' not 'error'
-  debug?: string; // Debug information for troubleshooting
-}
-
 
 export default function Home() {
   const { isFrameReady, setFrameReady, context } = useMiniKit();
@@ -23,38 +11,26 @@ export default function Home() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // Initialize the  miniapp
+  // Initialize the miniapp
   useEffect(() => {
     if (!isFrameReady) {
       setFrameReady();
     }
   }, [setFrameReady, isFrameReady]);
- 
-  
 
-  // If you need to verify the user's identity, you can use the useQuickAuth hook.
-  // This hook will verify the user's signature and return the user's FID. You can update
-  // this to meet your needs. See the /app/api/auth/route.ts file for more details.
-  // Note: If you don't need to verify the user's identity, you can get their FID and other user data
-  // via `context.user.fid`.
-  // const { data, isLoading, error } = useQuickAuth<{
-  //   userFid: string;
-  // }>("/api/auth");
-
-  const { data: authData, isLoading: isAuthLoading, error: authError } = useQuickAuth<AuthResponse>(
-    "/api/auth",
-    { method: "GET" }
-  );
+  // For a simple waitlist, we use context.user.fid directly
+  // The user is automatically authenticated when opening the app from Farcaster/Base
+  const isAuthenticated = !!context?.user?.fid;
 
   // Debug: Log authentication state
   useEffect(() => {
     console.log("Auth State:", {
-      isAuthLoading,
-      authError,
-      authData,
+      isAuthenticated,
+      userFid: context?.user?.fid,
+      displayName: context?.user?.displayName,
       context: context?.user
     });
-  }, [isAuthLoading, authError, authData, context]);
+  }, [isAuthenticated, context]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,17 +41,9 @@ export default function Home() {
     e.preventDefault();
     setError("");
 
-    // Check authentication first
-    if (isAuthLoading) {
-      setError("Please wait while we verify your identity...");
-      return;
-    }
-
-    if (authError || !authData?.success) {
-      console.error("Authentication failed:", { authError, authData });
-      // Show more detailed error message
-      const errorMsg = authData?.message || authData?.debug || authError?.message || "Authentication failed";
-      setError(`Auth Error: ${errorMsg}`);
+    // Check authentication - user must be authenticated via Farcaster/Base context
+    if (!isAuthenticated) {
+      setError("Please open this app from Farcaster or Base app");
       return;
     }
 
@@ -91,8 +59,9 @@ export default function Home() {
 
     // TODO: Save email to database/API with user FID
     console.log("Valid email submitted:", email);
-    console.log("User authenticated:", authData.user);
-    
+    console.log("User FID:", context?.user?.fid);
+    console.log("User display name:", context?.user?.displayName);
+
     // Navigate to success page
     router.push("/success");
   };
@@ -112,8 +81,8 @@ export default function Home() {
             crypto marketing strategy.
           </p>
 
-          {/* Debug panel */}
-          {(authError || !authData?.success) && (
+          {/* Debug panel - only show if not authenticated */}
+          {!isAuthenticated && (
             <div style={{
               background: '#fff3cd',
               border: '1px solid #ffc107',
@@ -123,12 +92,12 @@ export default function Home() {
               fontSize: '0.85rem',
               textAlign: 'left'
             }}>
-              <strong>Debug Info:</strong>
+              <strong>⚠️ Not Authenticated</strong>
               <div style={{ marginTop: '0.5rem' }}>
-                <div>Auth Loading: {isAuthLoading ? 'Yes' : 'No'}</div>
-                <div>Auth Success: {authData?.success ? 'Yes' : 'No'}</div>
-                <div>Error: {authError?.message || authData?.message || authData?.debug || 'None'}</div>
-                <div>Context User FID: {context?.user?.fid || 'Not available'}</div>
+                <div>Please open this app from Farcaster or Base app</div>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: '#666' }}>
+                  Debug: User FID = {context?.user?.fid || 'undefined'}
+                </div>
               </div>
             </div>
           )}
