@@ -1,0 +1,165 @@
+/* TBA Mini App Specs — Design Tokens
+   If you have official values from Figma, replace these here.
+*/
+
+:root {
+  /* Palette */
+  --tba-color-background: #0b1020;
+  --tba-color-surface: #121a33;
+  --tba-color-surface-variant: #0f172a;
+  --tba-color-border: #2a375f;
+  --tba-color-text: #e6ecff;
+  --tba-color-muted: #a5b1d8;
+  --tba-color-primary: #5b8cff;
+  --tba-color-primary-contrast: #0b1020;
+
+  /* State Colors */
+  --tba-state-hover: color-mix(in oklab, var(--tba-color-surface), white 4%);
+  --tba-state-active: color-mix(in oklab, var(--tba-color-surface), black 6%);
+  --tba-focus-color: color-mix(in oklab, var(--tba-color-primary), white 10%);
+  --tba-focus-width: 2px;
+
+  /* Spacing scale (4-based) */
+  --tba-space-2: 0.125rem;
+  --tba-space-4: 0.25rem;
+  --tba-space-8: 0.5rem;
+  --tba-space-12: 0.75rem;
+  --tba-space-16: 1rem;
+  --tba-space-24: 1.5rem;
+  --tba-space-32: 2rem;
+
+  /* Radius */
+  --tba-radius-sm: 0.375rem;
+  --tba-radius-md: 0.5rem;
+  --tba-radius-lg: 0.75rem;
+
+  /* Typography */
+  --tba-font-size-sm: 0.875rem;
+  --tba-font-size-base: 1rem;
+  --tba-font-size-lg: 1.125rem;
+  --tba-line-height: 1.5;
+
+  /* Elevation */
+  --tba-shadow-1: 0 1px 0 rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.25);
+
+  /* Motion */
+  --tba-duration-fast: 120ms;
+  --tba-duration-normal: 200ms;
+
+  /* Controls */
+  --tba-control-height: 2.75rem;
+  --tba-control-radius: var(--tba-radius-sm);
+  --tba-slider-thumb: 1.25rem;
+
+  /* Button Variants */
+  --tba-btn-primary-bg: var(--tba-color-primary);
+  --tba-btn-primary-bg-hover: color-mix(in oklab, var(--tba-color-primary), white 8%);
+  --tba-btn-primary-bg-active: color-mix(in oklab, var(--tba-color-primary), black 10%);
+  --tba-btn-primary-text: var(--tba-color-primary-contrast);
+  --tba-btn-primary-border: color-mix(in oklab, var(--tba-color-primary), black 20%);
+
+  --tba-btn-secondary-bg: var(--tba-color-surface);
+  --tba-btn-secondary-bg-hover: var(--tba-state-hover);
+  --tba-btn-secondary-bg-active: var(--tba-state-active);
+  --tba-btn-secondary-text: var(--tba-color-text);
+  --tba-btn-secondary-border: var(--tba-color-border);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --tba-color-background: #f8f9fc;
+    --tba-color-surface: #ffffff;
+    --tba-color-surface-variant: #f1f4fb;
+    --tba-color-border: #d8deea;
+    --tba-color-text: #111827;
+    --tba-color-muted: #6b7280;
+    --tba-color-primary: #3b82f6;
+    --tba-color-primary-contrast: #ffffff;
+
+    --tba-state-hover: color-mix(in oklab, var(--tba-color-surface), black 4%);
+    --tba-state-active: color-mix(in oklab, var(--tba-color-surface), black 8%);
+    --tba-focus-color: color-mix(in oklab, var(--tba-color-primary), white 10%);
+
+    --tba-btn-primary-bg: var(--tba-color-primary);
+    --tba-btn-primary-bg-hover: color-mix(in oklab, var(--tba-color-primary), white 8%);
+    --tba-btn-primary-bg-active: color-mix(in oklab, var(--tba-color-primary), black 10%);
+    --tba-btn-primary-text: var(--tba-color-primary-contrast);
+    --tba-btn-primary-border: color-mix(in oklab, var(--tba-color-primary), black 15%);
+
+    --tba-btn-secondary-bg: var(--tba-color-surface);
+    --tba-btn-secondary-bg-hover: var(--tba-state-hover);
+    --tba-btn-secondary-bg-active: var(--tba-state-active);
+    --tba-btn-secondary-text: var(--tba-color-text);
+    --tba-btn-secondary-border: var(--tba-color-border);
+  }
+}
+
+/* Explicit theme overrides via data-theme attribute */
+:root[data-theme='dark'] {
+  --tba-color-background: #0b1020;
+  --tba-color-surface: #121a33;
+  --tba-color-surface-variant: #0f172a;
+  --tba-color-border: #2a375f;
+  --tba-color-text: #e6ecff;
+  --tba-color-muted: #a5b1d8;
+  --tba-color-primary: #5b8cff;
+  --tba-color-primary-contrast: #0b1020;
+
+  --tba-state-hover: color-mix(in oklab, var(--tba-color-surface), white 4%);
+  --tba-state-active: color-mix(in oklab, var(--tba-color-surface), black 6%);
+  --tba-focus-color: color-mix(in oklab, var(--tba-color-primary), white 10%);
+
+  --tba-btn-primary-bg: var(--tba-color-primary);
+  --tba-btn-primary-bg-hover: color-mix(in oklab, var(--tba-color-primary), white 8%);
+  --tba-btn-primary-bg-active: color-mix(in oklab, var(--tba-color-primary), black 10%);
+  --tba-btn-primary-text: var(--tba-color-primary-contrast);
+  --tba-btn-primary-border: color-mix(in oklab, var(--tba-color-primary), black 20%);
+
+  --tba-btn-secondary-bg: var(--tba-color-surface);
+  --tba-btn-secondary-bg-hover: var(--tba-state-hover);
+  --tba-btn-secondary-bg-active: var(--tba-state-active);
+  --tba-btn-secondary-text: var(--tba-color-text);
+  --tba-btn-secondary-border: var(--tba-color-border);
+}
+
+:root[data-theme='light'] {
+  --tba-color-background: #f8f9fc;
+  --tba-color-surface: #ffffff;
+  --tba-color-surface-variant: #f1f4fb;
+  --tba-color-border: #d8deea;
+  --tba-color-text: #111827;
+  --tba-color-muted: #6b7280;
+  --tba-color-primary: #3b82f6;
+  --tba-color-primary-contrast: #ffffff;
+
+  --tba-state-hover: color-mix(in oklab, var(--tba-color-surface), black 4%);
+  --tba-state-active: color-mix(in oklab, var(--tba-color-surface), black 8%);
+  --tba-focus-color: color-mix(in oklab, var(--tba-color-primary), white 10%);
+
+  --tba-btn-primary-bg: var(--tba-color-primary);
+  --tba-btn-primary-bg-hover: color-mix(in oklab, var(--tba-color-primary), white 8%);
+  --tba-btn-primary-bg-active: color-mix(in oklab, var(--tba-color-primary), black 10%);
+  --tba-btn-primary-text: var(--tba-color-primary-contrast);
+  --tba-btn-primary-border: color-mix(in oklab, var(--tba-color-primary), black 15%);
+
+  --tba-btn-secondary-bg: var(--tba-color-surface);
+  --tba-btn-secondary-bg-hover: var(--tba-state-hover);
+  --tba-btn-secondary-bg-active: var(--tba-state-active);
+  --tba-btn-secondary-text: var(--tba-color-text);
+  --tba-btn-secondary-border: var(--tba-color-border);
+}
+
+/* Density modes: override spacing scale via body classes */
+body.density-compact {
+  --tba-space-12: 0.5rem;
+  --tba-space-16: 0.75rem;
+  --tba-space-24: 1rem;
+  --tba-control-height: 2.5rem;
+}
+
+body.density-comfortable {
+  --tba-space-12: 0.875rem;
+  --tba-space-16: 1.125rem;
+  --tba-space-24: 1.75rem;
+  --tba-control-height: 3rem;
+}
