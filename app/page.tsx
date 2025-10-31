@@ -281,7 +281,7 @@ export default function HomePage() {
                 ))}
             </ol>
 
-            {Number.isFinite(consistency.CR) && options.length >= 3 && (
+            {!isFrameReady && Number.isFinite(consistency.CR) && options.length >= 3 && (
               <div className="consistency">
                 <div><span className="muted">CR</span> <strong>{(consistency.CR * 100).toFixed(2)}%</strong></div>
                 <div><span className="muted">CI</span> <span className="mono">{consistency.CI.toFixed(4)}</span></div>
@@ -294,16 +294,18 @@ export default function HomePage() {
             )}
 
             {/* Farcaster Share Buttons - shown after calculating weights */}
-            <div className="row" style={{ gap: "var(--space-sm)", marginTop: "var(--space-sm)" }}>
-              <button className="btn secondary" onClick={handleShareInvitation}>
-                Compartir invitación
+            <div className="share-buttons">
+              <button className="btn share-btn" onClick={handleShareResults}>
+                <span className="share-icon">🎯</span>
+                <span>Compartir resultados</span>
               </button>
-              <button className="btn" onClick={handleShareResults}>
-                Compartir resultados
+              <button className="btn secondary share-btn" onClick={handleShareInvitation}>
+                <span className="share-icon">📤</span>
+                <span>Compartir invitación</span>
               </button>
             </div>
 
-            {consistency.CR >= 0.1 && conflicts.length > 0 && (
+            {!isFrameReady && consistency.CR >= 0.1 && conflicts.length > 0 && (
               <div className="card stack-sm" style={{ background: "transparent" }}>
                 <h3>Pares a revisar</h3>
                 <ul className="conflicts">

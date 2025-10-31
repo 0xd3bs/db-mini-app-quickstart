@@ -262,6 +262,30 @@ main.container {
   overscroll-behavior: contain;
 }
 
+/* Share buttons styling */
+.share-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  min-height: 3rem;
+  font-weight: 600;
+}
+
+.share-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
 @media (max-width: 40rem) {
   .pair { grid-template-columns: 1fr; }
   .pair-labels { display: none; }
@@ -275,6 +299,24 @@ main.container {
 
   h1 { font-size: 1.25rem; line-height: 1.4; }
   h2 { font-size: 1rem; line-height: 1.4; }
+
+  /* Enhanced share buttons for mobile */
+  .share-buttons {
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+  }
+
+  .share-btn {
+    min-height: 3.5rem;
+    padding: var(--space-sm);
+    font-size: 0.9375rem;
+    gap: var(--space-sm);
+  }
+
+  .share-icon {
+    font-size: 1.5rem;
+  }
 
   /* Adjust footer for mobile */
   .sticky-footer {
