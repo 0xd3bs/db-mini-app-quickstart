@@ -144,11 +144,9 @@ export default function HomePage() {
         .sort((a, b) => b.weight - a.weight);
 
       const winner = rankedOptions[0];
-      const crStatus = consistency.CR < 0.1 ? "OK" : "Review";
 
-      // Include goal and winner info in TEXT (not URL) for TBA compatibility
-      const goalText = goal ? ` for "${goal.substring(0, 40)}${goal.length > 40 ? '...' : ''}"` : '';
-      const text = `My AHP decision${goalText}: ${winner.name} wins with ${(winner.weight * 100).toFixed(0)}% weight. CR: ${(consistency.CR * 100).toFixed(1)}% (${crStatus}). Try it:`;
+      // SIMPLIFIED TEXT - matching button 1 format exactly (no special chars, quotes, or complex formatting)
+      const text = `I just completed an AHP analysis and the winner is ${winner.name}! Try it yourself: `;
 
       // CLEAN URL without query params (same as invitation button for TBA compatibility)
       const shareLink = process.env.NEXT_PUBLIC_URL || window.location.origin;
