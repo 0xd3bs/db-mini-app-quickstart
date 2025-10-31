@@ -28,7 +28,7 @@ export const minikitConfig = {
     tags: ["decision-making", "ahp", "saaty", "analytics", "productivity"],
     heroImageUrl: `${ROOT_URL}/blue-hero.png`,
     tagline: "Make Better Decisions",
-    ogTitle: "Saaty AHP - Multi-Criteria Decision Making",
+    ogTitle: "Saaty AHP Decision Assistant",
     ogDescription: "Use the Analytic Hierarchy Process to make data-driven decisions through pairwise comparisons.",
     ogImageUrl: `${ROOT_URL}/blue-hero.png`,
   },

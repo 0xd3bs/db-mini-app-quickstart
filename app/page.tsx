@@ -138,21 +138,30 @@ export default function HomePage() {
 
   const handleShareResults = async () => {
     try {
+      // Get winning option (highest weight)
       const rankedOptions = weights
         .map((w, i) => ({ name: options[i], weight: w }))
         .sort((a, b) => b.weight - a.weight);
 
-      const top3 = rankedOptions.slice(0, 3).map((opt, idx) =>
-        `${idx + 1}. ${opt.name} (${(opt.weight * 100).toFixed(1)}%)`
-      ).join('\n');
+      const winner = rankedOptions[0];
+      const crStatus = consistency.CR < 0.1 ? "OK" : "Review";
 
-      const crStatus = consistency.CR < 0.1 ? "✓ Consistent" : "⚠ Review needed";
+      // Compact message WITHOUT line breaks - only show winner
+      const text = `AHP Result: ${winner.name} ${(winner.weight * 100).toFixed(0)}%. CR ${(consistency.CR * 100).toFixed(1)}% (${crStatus}). Try Saaty AHP:`;
 
-      const text = `My AHP Analysis:\n${goal ? `Goal: ${goal}\n` : ''}${top3}\nCR: ${(consistency.CR * 100).toFixed(1)}% ${crStatus}\n\nTry Saaty AHP: `;
-
+      // Start with clean URL without query params to test
+      const baseUrl = process.env.NEXT_PUBLIC_URL || window.location.origin;
       const state = { goal, options, values, pairIndex };
       const s = encodeStateToUrlParam(state);
-      const shareLink = `${process.env.NEXT_PUBLIC_URL || window.location.origin}?s=${s}`;
+      const shareLink = `${baseUrl}?s=${s}`;
+
+      // Debug logging
+      console.log('=== Share Debug Info ===');
+      console.log('Text length:', text.length);
+      console.log('Text:', text);
+      console.log('URL length:', shareLink.length);
+      console.log('URL:', shareLink);
+      console.log('Base URL:', baseUrl);
 
       const result = await composeCastAsync({
         text: text,
@@ -166,6 +175,7 @@ export default function HomePage() {
       }
     } catch (error) {
       console.error("Error sharing cast:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
     }
   };
 
