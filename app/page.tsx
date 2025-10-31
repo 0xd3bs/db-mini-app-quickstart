@@ -146,22 +146,19 @@ export default function HomePage() {
       const winner = rankedOptions[0];
       const crStatus = consistency.CR < 0.1 ? "OK" : "Review";
 
-      // Compact message WITHOUT line breaks - only show winner
-      const text = `AHP Result: ${winner.name} ${(winner.weight * 100).toFixed(0)}%. CR ${(consistency.CR * 100).toFixed(1)}% (${crStatus}). Try Saaty AHP:`;
+      // Include goal and winner info in TEXT (not URL) for TBA compatibility
+      const goalText = goal ? ` for "${goal.substring(0, 40)}${goal.length > 40 ? '...' : ''}"` : '';
+      const text = `My AHP decision${goalText}: ${winner.name} wins with ${(winner.weight * 100).toFixed(0)}% weight. CR: ${(consistency.CR * 100).toFixed(1)}% (${crStatus}). Try it:`;
 
-      // Start with clean URL without query params to test
-      const baseUrl = process.env.NEXT_PUBLIC_URL || window.location.origin;
-      const state = { goal, options, values, pairIndex };
-      const s = encodeStateToUrlParam(state);
-      const shareLink = `${baseUrl}?s=${s}`;
+      // CLEAN URL without query params (same as invitation button for TBA compatibility)
+      const shareLink = process.env.NEXT_PUBLIC_URL || window.location.origin;
 
       // Debug logging
       console.log('=== Share Debug Info ===');
       console.log('Text length:', text.length);
       console.log('Text:', text);
-      console.log('URL length:', shareLink.length);
       console.log('URL:', shareLink);
-      console.log('Base URL:', baseUrl);
+      console.log('URL length:', shareLink.length);
 
       const result = await composeCastAsync({
         text: text,
