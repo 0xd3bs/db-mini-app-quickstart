@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import { computeConsistencyRatio, computeWeightsGeometricMean, createReciprocalMatrix, multiplyMatrixVector, type Matrix } from "@/lib/ahp";
 import { toSaatyFromStep, toStepFromSaaty } from "@/lib/scale";
 
@@ -127,7 +128,7 @@ export default function VerifyPage() {
       </section>
 
       <footer className="footer">
-        <a className="btn ghost" href="/">Volver</a>
+        <Link href="/" className="btn ghost">Volver</Link>
       </footer>
     </div>
   );

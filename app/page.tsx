@@ -9,7 +9,6 @@ import PairControl from "@/components/PairControl";
 import BottomSheet from "@/components/BottomSheet";
 import ThemeToggle from "@/components/ThemeToggle";
 import { encodeStateToUrlParam, decodeStateFromUrlParam } from "@/lib/state";
-import { minikitConfig } from "../minikit.config";
 
 type ComparisonValue = number; // Saaty value including reciprocals
 
@@ -234,7 +233,8 @@ export default function HomePage() {
                 return (e) => {
                   if (e.type === "touchstart") startX = e.touches[0].clientX;
                   if (e.type === "touchend") {
-                    const dx = (e as any).changedTouches?.[0]?.clientX - startX;
+                    const touchEvent = e as React.TouchEvent<HTMLDivElement>;
+                    const dx = touchEvent.changedTouches?.[0]?.clientX - startX;
                     if (dx > 50) setPairIndex(p => Math.max(0, p - 1));
                     if (dx < -50) setPairIndex(p => Math.min(pairs.length - 1, p + 1));
                   }
